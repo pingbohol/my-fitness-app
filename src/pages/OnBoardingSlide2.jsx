@@ -3,19 +3,6 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import gymBackground from '../assets/gym-background2.png';
 
-const PhoneFrame = styled.div`
-  width: 380px;
-  height: 800px;
-  background: #000;
-  border-radius: 45px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 
-    0 0 0 12px #1a1a1a,
-    0 0 0 14px #000,
-    0 20px 40px rgba(0, 0, 0, 0.4);
-`;
-
 const OnBoardingSlide2 = () => {
   const navigate = useNavigate();
 
@@ -25,28 +12,26 @@ const OnBoardingSlide2 = () => {
 
   return (
     <Container>
-      <PhoneFrame>
-        <BackgroundImage>
-          <img src={gymBackground} alt="Personal trainer helping woman with dumbbell exercise" />
-          <Overlay />
-        </BackgroundImage>
+      <BackgroundImage>
+        <img src={gymBackground} alt="Personal trainer helping woman with dumbbell exercise" />
+        <Overlay />
+      </BackgroundImage>
 
-        <Content>
-          <Title>Go on lifting with new people</Title>
-          <Subtitle>
-            Go on a walk or exercise with new people.
-          </Subtitle>
-        </Content>
+      <Content>
+        <Title>Go on lifting with new people</Title>
+        <Subtitle>
+          Go on a walk or exercise with new people.
+        </Subtitle>
+      </Content>
 
-        <BottomSection>
-          <Dots>
-            <Dot />
-            <Dot active />
-            <Dot />
-          </Dots>
-          <NextButton onClick={handleNext}>NEXT</NextButton>
-        </BottomSection>
-      </PhoneFrame>
+      <BottomSection>
+        <Dots>
+          <Dot />
+          <Dot active />
+          <Dot />
+        </Dots>
+        <NextButton onClick={handleNext}>NEXT</NextButton>
+      </BottomSection>
     </Container>
   );
 };
@@ -59,6 +44,11 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   color: white;
+  overflow: hidden;
+  width: 380px;
+  height: 800px;
+  border-radius: 45px;
+  position: relative;
   overflow: hidden;
 `;
 
@@ -159,10 +149,6 @@ const NextButton = styled.button`
   font-size: 20px;
   font-family: 'Montserrat', sans-serif;
   cursor: pointer;
-  
-  &:hover {
-    background-color: #8FD860;
-  }
 `;
 
 export default OnBoardingSlide2;

@@ -1,159 +1,250 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Mail, User, Eye, EyeOff } from 'lucide-react';
-import './Signup.css';
-import gymBackground from '../../assets/gym-background6.png';
+import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 
-const SignUp = () => {
+const Signup = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    confirmPassword: false
+  });
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const inputGroupStyle = {
-    backgroundColor: 'rgba(151, 151, 151, 0.5)',
-    borderRadius: '12px',
-    padding: '16px',
-    marginBottom: '12px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px'
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
-  const inputStyle = {
-    background: 'transparent',
-    border: 'none',
-    color: '#FFFFFF',
-    width: '100%',
-    fontSize: '16px',
-    outline: 'none',
+  const togglePasswordVisibility = (field) => {
+    setShowPassword(prev => ({
+      ...prev,
+      [field]: !prev[field]
+    }));
   };
 
-  const inputRules = `
-    input::placeholder {
-      color: rgba(255, 255, 255, 0.8);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords don't match!");
+      return;
     }
-  `;
-
-  const iconStyle = {
-    color: '#FFFFFF',
-    strokeWidth: 1.5
+    console.log('Signup attempt:', formData);
+    navigate('/complete-profile');
   };
 
   return (
-    <div className="device-container">
-      <div className="phone-frame">
-        <div className="dynamic-island"></div>
-        <div className="login-container" style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url(${gymBackground})`,
-          padding: '24px'
-        }}>
-          <h1 style={{ 
-            fontSize: '32px', 
-            color: 'white', 
-            marginBottom: '8px' 
-          }}>
-            Ready to Make<br />Fitness Fun?
-          </h1>
-          <p style={{ 
-            color: 'white', 
-            marginBottom: '24px',
-            opacity: 0.8 
-          }}>
-            Sign Up and Find Your Perfect Workout Partner!
-          </p>
-          
-          <div className="form-container">
-            <div style={inputGroupStyle}>
-              <User 
-                size={20} 
-                style={iconStyle}
-              />
-              <input
-                type="text"
-                placeholder="Name"
-                style={inputStyle}
-              />
-            </div>
+    <SignupContainer>
+      <ContentWrapper>
+        <Title>Ready to Make Fitness Fun?</Title>
+        <Subtitle>Sign Up and Find Your Perfect Workout Partner!</Subtitle>
 
-            <div style={inputGroupStyle}>
-              <Mail 
-                size={20} 
-                style={iconStyle}
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                style={inputStyle}
-              />
-            </div>
+        <SignupForm onSubmit={handleSubmit}>
+          <InputWrapper>
+            <InputIcon>
+              <User size={20} />
+            </InputIcon>
+            <InputField
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </InputWrapper>
 
-            <div style={inputGroupStyle}>
-              <Lock 
-                size={20} 
-                style={iconStyle}
-              />
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                style={inputStyle}
-              />
-              <span onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? 
-                  <Eye size={20} style={iconStyle} /> : 
-                  <EyeOff size={20} style={iconStyle} />
-                }
-              </span>
-            </div>
+          <InputWrapper>
+            <InputIcon>
+              <Mail size={20} />
+            </InputIcon>
+            <InputField
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </InputWrapper>
 
-            <div style={inputGroupStyle}>
-              <Lock 
-                size={20} 
-                style={iconStyle}
-              />
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                placeholder="Confirm Password"
-                style={inputStyle}
-              />
-              <span onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-                {showConfirmPassword ? 
-                  <Eye size={20} style={iconStyle} /> : 
-                  <EyeOff size={20} style={iconStyle} />
-                }
-              </span>
-            </div>
+          <InputWrapper>
+            <InputIcon>
+              <Lock size={20} />
+            </InputIcon>
+            <InputField
+              type={showPassword.password ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <PasswordToggle 
+              type="button"
+              onClick={() => togglePasswordVisibility('password')}
+            >
+              {showPassword.password ? <EyeOff size={20} /> : <Eye size={20} />}
+            </PasswordToggle>
+          </InputWrapper>
 
-            <button style={{
-              backgroundColor: '#A0E234',
-              border: 'none',
-              borderRadius: '12px',
-              padding: '16px',
-              width: '100%',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              marginTop: '24px'
-            }}>
-              SIGN IN
-            </button>
+          <InputWrapper>
+            <InputIcon>
+              <Lock size={20} />
+            </InputIcon>
+            <InputField
+              type={showPassword.confirmPassword ? "text" : "password"}
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+            <PasswordToggle 
+              type="button"
+              onClick={() => togglePasswordVisibility('confirmPassword')}
+            >
+              {showPassword.confirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </PasswordToggle>
+          </InputWrapper>
 
-            <p style={{ 
-              textAlign: 'center', 
-              marginTop: '16px', 
-              color: 'white' 
-            }}>
-              Already have an account? <span 
-                onClick={() => navigate('/login')} 
-                style={{ cursor: 'pointer', color: '#A5FF32' }}
-              >
-                Login
-              </span>
-            </p>
-          </div>
-        </div>
-      </div>
-      <style>{inputRules}</style>
-    </div>
+          <SignupButton type="submit">SIGN IN</SignupButton>
+        </SignupForm>
+
+        <LoginLink>
+          Already have an account? <Link onClick={() => navigate('/login')}>Login</Link>
+        </LoginLink>
+      </ContentWrapper>
+    </SignupContainer>
   );
 };
 
-export default SignUp;
+const SignupContainer = styled.div`
+  height: 100vh;
+  width: 100%;
+  background: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+`;
+
+const ContentWrapper = styled.div`
+  width: 100%;
+  max-width: 400px;
+`;
+
+const Title = styled.h1`
+  color: white;
+  font-size: 32px;
+  margin-bottom: 8px;
+  text-align: left;
+`;
+
+const Subtitle = styled.p`
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 32px;
+  text-align: left;
+`;
+
+const SignupForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  margin-bottom: 16px;
+`;
+
+const InputIcon = styled.div`
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+`;
+
+const InputField = styled.input`
+  width: 100%;
+  padding: 16px;
+  padding-left: 48px;
+  padding-right: ${props => props.type === 'password' ? '48px' : '16px'};
+  background: #1A1A1A;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+
+  &::placeholder {
+    color: #666;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #9FE870;
+  }
+`;
+
+const PasswordToggle = styled.button`
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: #9FE870;
+  }
+`;
+
+const SignupButton = styled.button`
+  width: 100%;
+  padding: 16px;
+  background: #9FE870;
+  border: none;
+  border-radius: 12px;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 16px;
+
+  &:hover {
+    background: #8CD962;
+  }
+`;
+
+const LoginLink = styled.p`
+  color: #666;
+  text-align: center;
+  margin-top: 24px;
+`;
+
+const Link = styled.span`
+  color: #9FE870;
+  cursor: pointer;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+export default Signup;

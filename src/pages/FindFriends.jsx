@@ -1,65 +1,71 @@
-import React, { useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
-import { IoArrowBack } from 'react-icons/io5';
+import React from 'react';
+import styled from 'styled-components';
+import { Search, ChevronLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import ProfileCircle1 from '../assets/ProfileCircle1.jpg';
+import ProfileCircle2 from '../assets/ProfileCircle2.jpg';
+import ProfileCircle3 from '../assets/ProfileCircle3.jpg';
+import ProfileCircle4 from '../assets/ProfileCircle4.jpg';
+import ProfileCircle5 from '../assets/ProfileCircle5.jpg';
+import ProfileCircle6 from '../assets/ProfileCircle6.jpg';
+import CenterProfile from '../assets/CenterProfile.jpg';
 
 const FindFriends = () => {
-  const profiles = [
-    { id: 1, image: '/path-to-profile1.jpg', position: { top: '20%', left: '20%' } },
-    { id: 2, image: '/path-to-profile2.jpg', position: { top: '10%', left: '50%' } },
-    { id: 3, image: '/path-to-profile3.jpg', position: { top: '30%', right: '20%' } },
-    { id: 4, image: '/path-to-profile4.jpg', position: { bottom: '30%', left: '15%' } },
-    { id: 5, image: '/path-to-profile5.jpg', position: { bottom: '20%', right: '25%' } },
-    { id: 6, image: '/path-to-profile6.jpg', position: { bottom: '40%', left: '45%' } },
-  ];
+  const navigate = useNavigate();
 
   return (
     <Container>
       <Header>
-        <BackButton>
-          <IoArrowBack size={24} color="white" />
+        <BackButton onClick={() => navigate(-1)}>
+          <ChevronLeft color="white" size={24} />
         </BackButton>
         <Title>Find Friends</Title>
       </Header>
-
-      <SearchArea>
-        <CircleContainer>
-          <OuterCircle />
-          <InnerCircle />
-          {profiles.map((profile) => (
-            <ProfileBubble key={profile.id} position={profile.position}>
-              <ProfileImage src={profile.image} alt="Profile" />
-            </ProfileBubble>
-          ))}
-          <CenterProfile>
-            <CenterProfileImage src="/path-to-main-profile.jpg" alt="Main Profile" />
-          </CenterProfile>
-        </CircleContainer>
-      </SearchArea>
+      
+      <SearchCircleContainer>
+        <OrbitalCircle color="#9FE870" duration="3s" size="280px" />
+        <OrbitalCircle color="#4A90E2" duration="2s" size="200px" direction="reverse" />
+        
+        <ProfileCircle 
+          style={{ top: '10%', left: '40%' }} 
+          image={ProfileCircle1}
+        />
+        <ProfileCircle 
+          style={{ top: '30%', left: '70%' }} 
+          image={ProfileCircle2}
+        />
+        <ProfileCircle 
+          style={{ top: '50%', left: '60%' }} 
+          image={ProfileCircle3}
+        />
+        <ProfileCircle 
+          style={{ top: '70%', left: '40%' }} 
+          image={ProfileCircle4}
+        />
+        <ProfileCircle 
+          style={{ top: '50%', left: '20%' }} 
+          image={ProfileCircle5}
+        />
+        <ProfileCircle 
+          style={{ top: '30%', left: '30%' }} 
+          image={ProfileCircle6}
+        />
+        
+        <CenterProfileCircle image={CenterProfile} />
+      </SearchCircleContainer>
 
       <SearchingText>Buddy Searching....</SearchingText>
     </Container>
   );
 };
 
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
 const Container = styled.div`
-  width: 100%;
+  padding: 0;
+  background: #000000;
   height: 100vh;
-  background-color: #000000;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 440px;
-  margin: 0 auto;
-  position: relative;
 `;
 
 const Header = styled.div`
@@ -71,107 +77,135 @@ const Header = styled.div`
 `;
 
 const BackButton = styled.button`
-  background: none;
-  border: none;
-  padding: 8px;
   position: absolute;
   left: 16px;
+  background: none;
+  border: none;
   cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const Title = styled.h1`
   color: white;
-  font-size: 24px;
-  font-weight: 600;
-  text-align: center;
-  width: 100%;
+  margin: 0 auto;
+  font-size: 20px;
 `;
 
-const SearchArea = styled.div`
-  flex: 1;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const SearchCircleContainer = styled.div`
   position: relative;
-`;
-
-const CircleContainer = styled.div`
   width: 300px;
   height: 300px;
-  position: relative;
+  margin: 40px 0;
 `;
 
-const OuterCircle = styled.div`
-  width: 100%;
-  height: 100%;
-  border: 2px solid rgba(149, 255, 0, 0.3);
-  border-radius: 50%;
-  position: absolute;
-  animation: ${rotate} 10s linear infinite;
-`;
-
-const InnerCircle = styled.div`
-  width: 70%;
-  height: 70%;
-  border: 2px solid rgba(0, 119, 255, 0.3);
-  border-radius: 50%;
-  position: absolute;
-  top: 15%;
-  left: 15%;
-  animation: ${rotate} 8s linear infinite reverse;
-`;
-
-const ProfileBubble = styled.div`
+const ProfileCircle = styled.div`
   position: absolute;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  top: ${props => props.position.top};
-  left: ${props => props.position.left};
-  right: ${props => props.position.right};
-  bottom: ${props => props.position.bottom};
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: ${props => props.image ? `url(${props.image})` : '#333'};
+  background-size: cover;
+  background-position: center top;
+  border: 2px solid #9FE870;
+  box-shadow: 0 0 10px rgba(159, 232, 112, 0.3);
+  animation: pulse 2s ease-in-out infinite;
   overflow: hidden;
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 10px rgba(159, 232, 112, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(159, 232, 112, 0.6);
+    }
+    100% {
+      box-shadow: 0 0 10px rgba(159, 232, 112, 0.3);
+    }
+  }
 `;
 
-const ProfileImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-const CenterProfile = styled.div`
-  position: absolute;
+const CenterProfileCircle = styled(ProfileCircle)`
   width: 80px;
   height: 80px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  overflow: hidden;
+  border: 2px solid #4A90E2;
+  animation: centerPulse 2s ease-in-out infinite;
   z-index: 2;
+
+  @keyframes centerPulse {
+    0% {
+      box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(74, 144, 226, 0.6);
+    }
+    100% {
+      box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);
+    }
+  }
 `;
 
-const CenterProfileImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+const OrbitalCircle = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  width: ${props => props.size || '220px'};
+  height: ${props => props.size * 0.8 || '176px'};
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1px solid ${props => props.color || '#9FE870'};
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      ${props => props.color || '#9FE870'}80 50%,
+      transparent 100%
+    );
+    transform-origin: left;
+    animation: scan ${props => props.duration || '4s'} linear infinite;
+    animation-direction: ${props => props.direction || 'normal'};
+    filter: blur(5px);
+  }
+
+  @keyframes scan {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 `;
 
-const SearchingText = styled.p`
+const SearchingText = styled.div`
   color: white;
-  font-size: 20px;
-  font-weight: 500;
-  margin-bottom: 40px;
+  font-size: 18px;
+  margin-top: 20px;
 `;
 
 export default FindFriends;

@@ -1,10 +1,36 @@
-import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, PenSquare, Settings, Bell, User } from 'lucide-react';
+import React, { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Settings, Bell, User, Home, Search, Play, MessageSquare, Star } from 'lucide-react';
 import styled from 'styled-components';
+import plankImage from '../assets/PlankWithHipTwist.jpg';
+
+const stretchingVideoUrl = '/videos/FullBodyStretching.mp4';
+const squatVideoUrl = '/videos/SquatExercise.mp4';
 
 const Homepage = () => {
   const navigate = useNavigate();
+  const stretchingVideoRef = useRef(null);
+  const squatVideoRef = useRef(null);
+  
+  const toggleStretchingVideo = () => {
+    if (stretchingVideoRef.current.paused) {
+      stretchingVideoRef.current.play();
+    } else {
+      stretchingVideoRef.current.pause();
+    }
+  };
+
+  const toggleSquatVideo = () => {
+    if (squatVideoRef.current.paused) {
+      squatVideoRef.current.play();
+    } else {
+      squatVideoRef.current.pause();
+    }
+  };
+
+  const handleVideoClick = (videoUrl) => {
+    navigate(`/play?video=${encodeURIComponent(videoUrl)}`);
+  };
 
   return (
     <Container>
@@ -15,288 +41,270 @@ const Homepage = () => {
             <span>Sophie</span>
           </Title>
           <HeaderIcons>
-            <IconButton>
-              <Link to="/settings">
-                <Settings size={20} color="#9FE870" />
-              </Link>
+            <IconButton onClick={() => navigate('/settings')}>
+              <Settings size={20} color="#9FE870" />
             </IconButton>
-            <IconButton>
-              <Link to="/notifications">
-                <Bell size={20} color="#FFD700" />
-              </Link>
+            <IconButton onClick={() => navigate('/notifications')}>
+              <Bell size={20} color="#FFD700" />
             </IconButton>
-            <IconButton>
-              <Link to="/edit-profile">
-                <User size={20} color="#9370DB" />
-              </Link>
+            <IconButton onClick={() => navigate('/edit-profile')}>
+              <User size={20} color="#9370DB" />
             </IconButton>
           </HeaderIcons>
         </HeaderTop>
         <Subtitle>It's time to challenge your limits.</Subtitle>
       </Header>
 
-      <QuickActions />
+      <ActionGrid>
+        <ActionButton onClick={() => navigate('/workout')}>
+          <ActionIconWrapper>
+            <Home size={24} color="#9FE870" />
+          </ActionIconWrapper>
+          <ActionText>Workout</ActionText>
+        </ActionButton>
+        <ActionButton onClick={() => navigate('/progress')}>
+          <ActionIconWrapper>
+            <Search size={24} color="#9FE870" />
+          </ActionIconWrapper>
+          <ActionText>Progress Tracking</ActionText>
+        </ActionButton>
+        <ActionButton onClick={() => navigate('/nutrition')}>
+          <ActionIconWrapper>
+            <Play size={24} color="#9FE870" />
+          </ActionIconWrapper>
+          <ActionText>Nutrition</ActionText>
+        </ActionButton>
+        <ActionButton onClick={() => navigate('/community')}>
+          <ActionIconWrapper>
+            <MessageSquare size={24} color="#9FE870" />
+          </ActionIconWrapper>
+          <ActionText>Community</ActionText>
+        </ActionButton>
+      </ActionGrid>
 
       <Section>
-        <SectionTitle>Recommendations</SectionTitle>
+        <SectionHeading>Recommendations</SectionHeading>
         <WorkoutGrid>
           <WorkoutCard>
-            <WorkoutImage src="/images/workouts/squat-exercise.jpg" alt="Squat Exercise" />
-            <StarIcon>⭐</StarIcon>
-            <PlayButton>▶</PlayButton>
-            <WorkoutInfo>
+            <WorkoutImageContainer>
+              <StarBadge>
+                <Star size={16} color="#FFD700" />
+              </StarBadge>
+              <WorkoutVideo
+                ref={squatVideoRef}
+                src={squatVideoUrl}
+                muted
+                loop
+              />
+              <PlayOverlay onClick={() => handleVideoClick('/videos/SquatExercise.mp4')}>
+                <Play size={16} color="#FFFFFF" />
+              </PlayOverlay>
+            </WorkoutImageContainer>
+            <WorkoutDetails>
               <WorkoutName>Squat Exercise</WorkoutName>
               <WorkoutStats>
-                <Stat>⏱ 12 Minutes</Stat>
-                <Stat>🔥 120 Kcal</Stat>
+                <StatItem>⏱ 0:25</StatItem>
+                <StatItem>🔥 120 Kcal</StatItem>
               </WorkoutStats>
-            </WorkoutInfo>
+            </WorkoutDetails>
           </WorkoutCard>
+
           <WorkoutCard>
-            <WorkoutImage src="/images/workouts/full-body-stretching.jpg" alt="Full Body Stretching" />
-            <StarIcon>⭐</StarIcon>
-            <PlayButton>▶</PlayButton>
-            <WorkoutInfo>
+            <WorkoutImageContainer>
+              <StarBadge>
+                <Star size={16} color="#FFD700" />
+              </StarBadge>
+              <WorkoutVideo
+                ref={stretchingVideoRef}
+                src={stretchingVideoUrl}
+                muted
+                loop
+              />
+              <PlayOverlay onClick={() => handleVideoClick('/videos/FullBodyStretching.mp4')}>
+                <Play size={16} color="#FFFFFF" />
+              </PlayOverlay>
+            </WorkoutImageContainer>
+            <WorkoutDetails>
               <WorkoutName>Full Body Stretching</WorkoutName>
               <WorkoutStats>
-                <Stat>⏱ 12 Minutes</Stat>
-                <Stat> 120 Kcal</Stat>
+                <StatItem>⏱ 0:25</StatItem>
+                <StatItem>🔥 120 Kcal</StatItem>
               </WorkoutStats>
-            </WorkoutInfo>
+            </WorkoutDetails>
           </WorkoutCard>
         </WorkoutGrid>
-      </Section>
 
-      <Section>
-        <WeeklyChallenge>
-          <ChallengeContent>
+        <ChallengeCard>
+          <ChallengeInfo>
             <ChallengeTitle>Weekly Challenge</ChallengeTitle>
             <ChallengeText>Plank With Hip Twist</ChallengeText>
-          </ChallengeContent>
-          <ChallengeImage src="/images/workouts/plank-challenge.jpg" alt="Plank Challenge" />
-        </WeeklyChallenge>
+          </ChallengeInfo>
+          <ChallengeImage src={plankImage} alt="Plank With Hip Twist" />
+        </ChallengeCard>
       </Section>
 
-      <Section>
-        <SectionTitle>Articles & Tips</SectionTitle>
-        <ArticleGrid>
-          <ArticleCard>
-            <ArticleImage src="/images/articles/supplement-guide.jpg" alt="Supplement Guide" />
-            <StarIcon>⭐</StarIcon>
-            <ArticleTitle>Supplement Guide...</ArticleTitle>
-          </ArticleCard>
-          <ArticleCard>
-            <ArticleImage src="/images/articles/daily-routines.jpg" alt="Daily Routines" />
-            <ArticleTitle>15 Quick & Effective Daily Routines...</ArticleTitle>
-          </ArticleCard>
-        </ArticleGrid>
-      </Section>
+      <BottomNav>
+        <NavButton active={true}>
+          <Home size={24} />
+        </NavButton>
+        <NavButton onClick={() => navigate('/find-friends')}>
+          <Search size={24} />
+        </NavButton>
+        <NavButton onClick={() => navigate('/play')}>
+          <Play size={24} />
+        </NavButton>
+        <NavButton onClick={() => navigate('/chats')}>
+          <MessageSquare size={24} />
+        </NavButton>
+      </BottomNav>
     </Container>
   );
 };
 
+// Styled Components
 const Container = styled.div`
   padding: 20px;
-  color: white;
+  padding-bottom: 80px;
   background: #000000;
+  color: white;
+  height: 800px;
+  width: 380px;
+  position: relative;
+  border-radius: 45px;
+  overflow: hidden;
 `;
 
-const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 50px;
+const Header = styled.header`
+  margin-bottom: 32px;
 `;
 
 const HeaderTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 `;
 
-const Title = styled.div`
-  & > span {
+const Title = styled.h1`
+  span {
     display: block;
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 600;
-    line-height: 1.2;
   }
 `;
 
 const HeaderIcons = styled.div`
   display: flex;
   gap: 16px;
-  margin-top: 8px;
 `;
 
 const IconButton = styled.button`
   background: none;
   border: none;
-  padding: 0;
+  padding: 8px;
   cursor: pointer;
-`;
-
-const QuickActions = () => {
-  return (
-    <QuickActionsContainer>
-      <ActionItem>
-        <ActionIcon>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path d="M4 10v4M20 10v4M6 12h12M2 12h2M20 12h2" 
-              stroke="#9FE870" 
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-        </ActionIcon>
-        <ActionText>Workout</ActionText>
-      </ActionItem>
-      <ActionItem>
-        <ActionIcon>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <rect x="6" y="4" width="12" height="16" rx="2" 
-              stroke="#fff" 
-              strokeWidth="1.5"
-            />
-            <path d="M9 8h6M9 12h6M9 16h6" 
-              stroke="#fff" 
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-        </ActionIcon>
-        <ActionText>Progress{'\n'}Tracking</ActionText>
-      </ActionItem>
-      <ActionItem>
-        <ActionIcon>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path d="M12 6c-1.5 0-3 1-3 3s1.5 3 3 3 3-1 3-3-1.5-3-3-3z" 
-              stroke="#fff" 
-              strokeWidth="1.5"
-            />
-            <path d="M12 10v4" 
-              stroke="#fff" 
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-        </ActionIcon>
-        <ActionText>Nutrition</ActionText>
-      </ActionItem>
-      <ActionItem>
-        <ActionIcon>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="8" r="4" 
-              stroke="#fff" 
-              strokeWidth="1.5"
-            />
-            <path d="M4 20v-2a8 8 0 0116 0v2" 
-              stroke="#fff" 
-              strokeWidth="1.5"
-            />
-          </svg>
-        </ActionIcon>
-        <ActionText>Community</ActionText>
-      </ActionItem>
-    </QuickActionsContainer>
-  );
-};
-
-const QuickActionsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin: 40px 0;
-  padding: 0 20px;
+  justify-content: center;
 `;
 
-const ActionItem = styled.div`
+const Subtitle = styled.p`
+  color: #9FE870;
+  font-size: 16px;
+`;
+
+const ActionGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+`;
+
+const ActionButton = styled.button`
+  background: none;
+  border: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  position: relative;
-  
-  &:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    right: -20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 1px;
-    height: 24px;
-    background: rgba(255, 255, 255, 0.1);
-  }
+  cursor: pointer;
+  color: white;
 `;
 
-const ActionIcon = styled.div`
+const ActionIconWrapper = styled.div`
+  width: 48px;
+  height: 48px;
+  background: #1A1A1A;
+  border-radius: 12px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 `;
 
 const ActionText = styled.span`
-  color: #9FE870;
-  font-size: 13px;
+  font-size: 12px;
   text-align: center;
-  white-space: pre-line;
-`;
-
-const Section = styled.div`
-  margin-bottom: 30px;
-`;
-
-const SectionTitle = styled.h2`
   color: #9FE870;
-  font-size: 26px;
-  margin-bottom: 20px;
-  font-weight: 600;
+`;
+
+const Section = styled.section`
+  margin-bottom: 32px;
+`;
+
+const SectionHeading = styled.h2`
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: #9FE870;
 `;
 
 const WorkoutGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
   margin-bottom: 24px;
 `;
 
 const WorkoutCard = styled.div`
-  position: relative;
+  background: #1A1A1A;
   border-radius: 16px;
   overflow: hidden;
-  background: #1A1A1A;
 `;
 
-const WorkoutImage = styled.img`
+const WorkoutImageContainer = styled.div`
+  position: relative;
+  aspect-ratio: 16/9;
+`;
+
+const WorkoutVideo = styled.video`
   width: 100%;
-  height: 120px;
+  height: 100%;
   object-fit: cover;
 `;
 
-const StarIcon = styled.div`
+const StarBadge = styled.div`
   position: absolute;
   top: 8px;
   left: 8px;
-  font-size: 16px;
+  z-index: 2;
 `;
 
-const PlayButton = styled.button`
+const PlayOverlay = styled.div`
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #9FE870;
-  border: none;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: black;
-  font-size: 14px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
-const WorkoutInfo = styled.div`
+const WorkoutDetails = styled.div`
   padding: 12px;
 `;
 
@@ -310,75 +318,67 @@ const WorkoutStats = styled.div`
   gap: 12px;
 `;
 
-const Stat = styled.span`
-  color: #666;
+const StatItem = styled.span`
   font-size: 12px;
+  color: #9FE870;
 `;
 
-const WeeklyChallenge = styled.div`
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
+const ChallengeCard = styled.div`
   background: #1A1A1A;
-  height: 120px;
-  margin-bottom: 24px;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
 `;
 
-const ChallengeContent = styled.div`
-  position: absolute;
-  padding: 16px;
-  z-index: 1;
+const ChallengeInfo = styled.div`
+  flex: 1;
 `;
 
 const ChallengeTitle = styled.h3`
   color: #9FE870;
-  font-size: 24px;
   margin-bottom: 8px;
 `;
 
 const ChallengeText = styled.p`
-  font-size: 14px;
+  font-size: 18px;
+  font-weight: 600;
 `;
 
 const ChallengeImage = styled.img`
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+`;
+
+const BottomNav = styled.div`
   position: absolute;
+  bottom: 0;
+  left: 0;
   right: 0;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-const ArticleGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-`;
-
-const ArticleCard = styled.div`
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
+  height: 60px;
   background: #1A1A1A;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom-left-radius: 45px;
+  border-bottom-right-radius: 45px;
 `;
 
-const ArticleImage = styled.img`
-  width: 100%;
-  height: 100px;
-  object-fit: cover;
-`;
+const NavButton = styled.button`
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: ${props => props.active ? '#9FE870' : '#FFFFFF'};
 
-const ArticleTitle = styled.h3`
-  font-size: 12px;
-  padding: 12px;
-`;
-
-const Subtitle = styled.p`
-  color: #666;
-  font-size: 14px;
-  line-height: 1.4;
-  max-width: 200px;
+  &:hover {
+    color: #9FE870;
+  }
 `;
 
 export default Homepage;
-

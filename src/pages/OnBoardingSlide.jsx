@@ -6,19 +6,6 @@ import '@fontsource/montserrat/400.css' // Regular
 import '@fontsource/montserrat/700.css' // Bold
 import '@fontsource/montserrat/600.css' // SemiBold
 
-const PhoneFrame = styled.div`
-  width: 380px;
-  height: 800px;
-  background: #000;
-  border-radius: 45px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 
-    0 0 0 12px #1a1a1a,
-    0 0 0 14px #000,
-    0 20px 40px rgba(0, 0, 0, 0.4);
-`;
-
 const OnBoardingSlide = () => {
   const navigate = useNavigate();
 
@@ -28,28 +15,26 @@ const OnBoardingSlide = () => {
 
   return (
     <Container>
-      <PhoneFrame>
-        <BackgroundImage>
-          <img src={gymBackground} alt="Person working out with dumbbells" />
-          <Overlay />
-        </BackgroundImage>
+      <BackgroundImage>
+        <img src={gymBackground} alt="Person working out with dumbbells" />
+        <Overlay />
+      </BackgroundImage>
 
-        <Content>
-          <Title>Do you find working out alone boring?</Title>
-          <Subtitle>
-            Meet up with new people who are passionate about keeping fit too.
-          </Subtitle>
-        </Content>
+      <Content>
+        <Title>Do you find working out alone boring?</Title>
+        <Subtitle>
+          Meet up with new people who are passionate about keeping fit too.
+        </Subtitle>
+      </Content>
 
-        <BottomSection>
-          <Dots>
-            <Dot active />
-            <Dot />
-            <Dot />
-          </Dots>
-          <NextButton onClick={handleNext}>NEXT</NextButton>
-        </BottomSection>
-      </PhoneFrame>
+      <BottomSection>
+        <Dots>
+          <Dot active />
+          <Dot />
+          <Dot />
+        </Dots>
+        <NextButton onClick={handleNext}>NEXT</NextButton>
+      </BottomSection>
     </Container>
   );
 };
@@ -62,6 +47,11 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   color: white;
+  overflow: hidden;
+  width: 380px;
+  height: 800px;
+  border-radius: 45px;
+  position: relative;
   overflow: hidden;
 `;
 
@@ -99,27 +89,22 @@ const Content = styled.div`
   justify-content: flex-start;
   padding-top: 120px;
   height: 100%;
-  font-family: 'Montserrat', sans-serif;
 `;
 
 const Title = styled.h1`
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 16px;
-  text-align: left;
-  line-height: 1.2;
   font-family: 'Montserrat', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  line-height: 1.2;
 `;
 
 const Subtitle = styled.p`
-  font-size: 18px;
-  font-weight: regular;
-  line-height: 1.4;
-  opacity: 0.9;
-  text-align: left;
-  margin-bottom: 40px;
-  max-width: 90%;
   font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.5;
+  opacity: 0.8;
 `;
 
 const BottomSection = styled.div`
@@ -141,10 +126,10 @@ const Dots = styled.div`
 `;
 
 const Dot = styled.div`
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background-color: ${props => props.active ? '#9FE870' : 'rgba(255,255,255,0.3)'};
+  background-color: ${props => props.active ? '#fff' : 'rgba(255, 255, 255, 0.5)'};
 `;
 
 const NextButton = styled.button`
@@ -158,10 +143,6 @@ const NextButton = styled.button`
   font-size: 20px;
   font-family: 'Montserrat', sans-serif;
   cursor: pointer;
-  
-  &:hover {
-    background-color: #8FD860;
-  }
 `;
 
 export default OnBoardingSlide;

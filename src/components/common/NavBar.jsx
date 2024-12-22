@@ -1,80 +1,65 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Home, Circle, Play, MessageSquare } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Home, Users, Play, MessageCircle, Settings } from 'lucide-react';
 
 const NavBar = () => {
+  const navigate = useNavigate();
   const location = useLocation();
-  
+
+  const isActive = (path) => location.pathname === path;
+
   return (
-    <NavigationWrapper>
-      <Navigation>
-        <NavItem as={Link} to="/home" active={location.pathname === "/home"}>
-          <IconWrapper isActive={location.pathname === "/home"}>
-            <Home strokeWidth={1.5} size={28} />
-          </IconWrapper>
-        </NavItem>
-        <NavItem as={Link} to="/find-friends" active={location.pathname === "/find-friends"}>
-          <IconWrapper isActive={location.pathname === "/find-friends"}>
-            <Circle strokeWidth={1.5} size={28} />
-          </IconWrapper>
-        </NavItem>
-        <NavItem as={Link} to="/play" active={location.pathname === "/play"}>
-          <IconWrapper isActive={location.pathname === "/play"}>
-            <Play strokeWidth={1.5} size={28} />
-          </IconWrapper>
-        </NavItem>
-        <NavItem as={Link} to="/chats" active={location.pathname === "/chats"}>
-          <IconWrapper isActive={location.pathname === "/chats"}>
-            <MessageSquare strokeWidth={1.5} size={28} />
-          </IconWrapper>
-        </NavItem>
-      </Navigation>
-    </NavigationWrapper>
+    <NavBarContainer>
+      <NavItem onClick={() => navigate('/home')} active={isActive('/home')}>
+        <Home size={24} />
+      </NavItem>
+      <NavItem onClick={() => navigate('/find-friends')} active={isActive('/find-friends')}>
+        <Users size={24} />
+      </NavItem>
+      <NavItem onClick={() => navigate('/play')} active={isActive('/play')}>
+        <Play size={24} fill={isActive('/play') ? "#007AFF" : "none"} />
+      </NavItem>
+      <NavItem onClick={() => navigate('/chats')} active={isActive('/chats')}>
+        <MessageCircle size={24} />
+      </NavItem>
+      <NavItem onClick={() => navigate('/settings')} active={isActive('/settings')}>
+        <Settings size={24} />
+      </NavItem>
+    </NavBarContainer>
   );
 };
 
-const NavigationWrapper = styled.div`
+const NavBarContainer = styled.nav`
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: #000000;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 8px 0;
-  z-index: 1000;
-`;
-
-const Navigation = styled.nav`
-  max-width: 375px;
-  margin: 0 auto;
+  height: 60px;
+  background: #111;
   display: flex;
   justify-content: space-around;
   align-items: center;
-`;
+  border-top: 1px solid #333;
+  max-width: 430px;
+  margin: 0 auto;
 
-const NavItem = styled(Link)`
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  padding: 8px;
-  transition: all 0.2s ease;
-`;
-
-const IconWrapper = styled.div`
-  color: ${props => props.isActive ? '#9FE870' : 'rgba(255, 255, 255, 0.4)'};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease;
-
-  ${NavItem}:hover & {
-    color: ${props => props.isActive ? '#9FE870' : 'rgba(255, 255, 255, 0.6)'};
+  @media (min-width: 431px) {
+    border-radius: 0 0 40px 40px;
   }
 `;
 
-export default NavBar;
+const NavItem = styled.button`
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: ${props => props.active ? '#007AFF' : '#666'};
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #007AFF;
+  }
+`;
+
+export default NavBar; 

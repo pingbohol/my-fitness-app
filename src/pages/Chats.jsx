@@ -1,107 +1,100 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IoArrowBack } from 'react-icons/io5';
-import { BiSearch, BiDumbbell, BiMap, BiMessageSquare } from 'react-icons/bi';
+import { ArrowLeft, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import avatar1 from '../assets/avatar1.jpg';
+import avatar2 from '../assets/avatar2.jpg';
 
 const Chats = () => {
-  const chatList = [
-    {
-      id: 1,
-      name: 'Jhomarie Avocado',
-      lastMessage: 'Gym tonight',
-      time: '9:45 pm',
-      avatar: '/path-to-avatar1.jpg'
-    },
-    {
-      id: 2,
-      name: 'Nikki Minajnos',
-      lastMessage: 'See you there!',
-      time: '9:10 pm',
-      avatar: '/path-to-avatar2.jpg'
-    }
-  ];
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate('/home');
+  };
+
+  const handleChatClick = (userId) => {
+    navigate(`/chat/${userId}`);
+  };
 
   return (
     <Container>
       <Header>
-        <BackButton>
-          <IoArrowBack size={24} color="white" />
+        <BackButton onClick={handleBack}>
+          <ArrowLeft size={24} color="white" />
         </BackButton>
         <Title>Chats</Title>
       </Header>
 
       <SearchBar>
-        <BiSearch size={20} color="#666" />
+        <Search size={20} color="#666" />
         <SearchInput placeholder="Search" />
       </SearchBar>
 
       <ChatList>
-        {chatList.map((chat) => (
-          <ChatItem key={chat.id}>
-            <Avatar src={chat.avatar} alt={chat.name} />
-            <ChatInfo>
-              <ChatName>{chat.name}</ChatName>
-              <LastMessage>{chat.lastMessage}</LastMessage>
-            </ChatInfo>
-            <ChatTime>{chat.time}</ChatTime>
-          </ChatItem>
-        ))}
-      </ChatList>
+        <ChatItem onClick={() => handleChatClick('jhomarie')}>
+          <Avatar>
+            <AvatarImage src={avatar1} alt="Jhomarie" />
+          </Avatar>
+          <ChatInfo>
+            <Name>Jhomarie Avocado</Name>
+            <LastMessage>Gym tonight</LastMessage>
+          </ChatInfo>
+          <TimeStamp>9:45 pm</TimeStamp>
+        </ChatItem>
 
-      <BottomNav>
-        <NavItem>
-          <BiDumbbell size={24} color="white" />
-        </NavItem>
-        <NavItem>
-          <BiMap size={24} color="white" />
-        </NavItem>
-        <NavItem>
-          <BiMessageSquare size={24} color="#95FF00" />
-        </NavItem>
-      </BottomNav>
+        <ChatItem onClick={() => handleChatClick('nikki')}>
+          <Avatar>
+            <AvatarImage src={avatar2} alt="Nikki" />
+          </Avatar>
+          <ChatInfo>
+            <Name>Nikki Minajnos</Name>
+            <LastMessage>See you there!</LastMessage>
+          </ChatInfo>
+          <TimeStamp>9:10 pm</TimeStamp>
+        </ChatItem>
+      </ChatList>
     </Container>
   );
 };
 
 const Container = styled.div`
-  width: 100%;
+  padding: 20px;
+  background: #000000;
+  color: white;
   height: 100vh;
-  background-color: #000000;
-  max-width: 440px;
-  margin: 0 auto;
-  position: relative;
-  font-family: 'Montserrat', sans-serif;
+  width: 100%;
 `;
 
 const Header = styled.div`
-  padding: 20px;
   display: flex;
   align-items: center;
-  position: relative;
+  gap: 16px;
+  margin-bottom: 24px;
 `;
 
 const BackButton = styled.button`
   background: none;
   border: none;
-  padding: 8px;
+  padding: 0;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Title = styled.h1`
-  color: white;
   font-size: 24px;
   font-weight: 600;
-  margin-left: 24px;
 `;
 
 const SearchBar = styled.div`
-  margin: 0 20px 20px;
-  background-color: #333;
+  background: #1A1A1A;
   border-radius: 12px;
   padding: 12px 16px;
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-bottom: 24px;
 `;
 
 const SearchInput = styled.input`
@@ -118,69 +111,65 @@ const SearchInput = styled.input`
 `;
 
 const ChatList = styled.div`
-  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;
 
 const ChatItem = styled.div`
   display: flex;
   align-items: center;
-  padding: 16px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 12px;
+  padding: 12px;
   cursor: pointer;
+  border-radius: 12px;
+  transition: background-color 0.2s;
 
-  &:last-child {
-    border-bottom: none;
+  &:hover {
+    background: #1A1A1A;
   }
 `;
 
-const Avatar = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+const Avatar = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const AvatarImage = styled.img`
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 `;
 
 const ChatInfo = styled.div`
   flex: 1;
-  margin-left: 16px;
+  min-width: 0;
 `;
 
-const ChatName = styled.h2`
-  color: white;
+const Name = styled.div`
+  font-weight: 600;
   font-size: 16px;
-  font-weight: 500;
   margin-bottom: 4px;
 `;
 
-const LastMessage = styled.p`
-  color: #888;
+const LastMessage = styled.div`
+  color: #999;
   font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
-const ChatTime = styled.span`
+const TimeStamp = styled.div`
   color: #666;
   font-size: 12px;
-`;
-
-const BottomNav = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: #1A1A1A;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  max-width: 440px;
-  margin: 0 auto;
-`;
-
-const NavItem = styled.button`
-  background: none;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
+  white-space: nowrap;
 `;
 
 export default Chats;

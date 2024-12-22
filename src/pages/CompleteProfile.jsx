@@ -5,6 +5,7 @@ import '@fontsource/montserrat/400.css'
 import '@fontsource/montserrat/600.css'
 import '@fontsource/montserrat/700.css'
 import backgroundImage from '../assets/gym-background5.png';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   height: 100vh;
@@ -138,6 +139,12 @@ const CompleteButton = styled.button`
 `;
 
 const CompleteProfile = () => {
+  const navigate = useNavigate();
+
+  const handleComplete = () => {
+    navigate('/home');
+  };
+
   return (
     <Container>
       <PhoneFrame>
@@ -184,7 +191,7 @@ const CompleteProfile = () => {
             </InterestButtons>
           </InterestSection>
 
-          <CompleteButton>Complete My Profile</CompleteButton>
+          <CompleteButton onClick={handleComplete}>Complete My Profile</CompleteButton>
         </Content>
       </PhoneFrame>
     </Container>

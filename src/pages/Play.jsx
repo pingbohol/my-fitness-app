@@ -1,197 +1,206 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IoArrowBack } from 'react-icons/io5';
-import { BsDroplet } from 'react-icons/bs';
+import { ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import ProfileCircle1 from '../assets/ProfileCircle1.jpg';
+import ProfileCircle2 from '../assets/ProfileCircle2.jpg';
+import ProfileCircle3 from '../assets/ProfileCircle3.jpg';
 
-const WorkoutProgress = () => {
-  const players = [
-    { id: 1, name: 'Cloe Dens', workouts: 8, kcal: 460, avatar: '/path-to-avatar1.jpg', color: '#95FF00' },
-    { id: 2, name: 'Jhom Avocado', workouts: 5, kcal: 240, avatar: '/path-to-avatar2.jpg', color: '#8A6FFF' },
-    { id: 3, name: 'Nikki Smith', workouts: 8, kcal: 500, avatar: '/path-to-avatar3.jpg', color: '#95FF00' },
+const Play = () => {
+  const navigate = useNavigate();
+
+  const workouts = [
+    { name: 'Cloe Dens', workouts: 8, kcal: 460, color: '#A0E234', image: ProfileCircle1 },
+    { name: 'Jham Avocado', workouts: 5, kcal: 240, color: '#9370DB', image: ProfileCircle2 },
+    { name: 'Nikki Smith', workouts: 3, kcal: 500, color: '#A0E234', image: ProfileCircle3 }
   ];
 
   return (
     <Container>
       <Header>
-        <BackButton>
-          <IoArrowBack size={24} color="white" />
+        <BackButton onClick={() => navigate(-1)}>
+          <ArrowLeft color="white" size={24} />
         </BackButton>
         <Title>Playing</Title>
       </Header>
 
-      <ProgressSection>
-        <CircularProgress>
-          <svg width="240" height="240" viewBox="0 0 240 240">
-            {/* Background circles */}
-            <circle cx="120" cy="120" r="110" fill="none" stroke="#1A1A1A" strokeWidth="12" />
-            
-            {/* Progress circles */}
-            <circle 
-              cx="120" 
-              cy="120" 
-              r="110" 
-              fill="none" 
-              stroke="#95FF00" 
-              strokeWidth="12" 
-              strokeDasharray="691" 
-              strokeDashoffset="172.75"
-              transform="rotate(-90 120 120)"
-            />
-            <circle 
-              cx="120" 
-              cy="120" 
-              r="90" 
-              fill="none" 
-              stroke="#8A6FFF" 
-              strokeWidth="12" 
-              strokeDasharray="565.48" 
-              strokeDashoffset="424.11"
-              transform="rotate(-90 120 120)"
-            />
-          </svg>
-          <ProgressContent>
-            <span>Today</span>
-            <KcalCount>2100</KcalCount>
-            <span>Kcal</span>
-          </ProgressContent>
-        </CircularProgress>
-      </ProgressSection>
+      <Content>
+        <CalorieCircle>
+          <CircleProgress>
+            <InnerCircle>
+              <CircleText>
+                <span>Today</span>
+                <KcalNumber>2100</KcalNumber>
+                <span>Kcal</span>
+              </CircleText>
+            </InnerCircle>
+          </CircleProgress>
+        </CalorieCircle>
 
-      <PlayersList>
-        {players.map((player) => (
-          <PlayerCard key={player.id} color={player.color}>
-            <PlayerInfo>
-              <PlayerAvatar src={player.avatar} alt={player.name} />
-              <PlayerDetails>
-                <PlayerName>{player.name}</PlayerName>
-                <WorkoutCount>{player.workouts} workouts</WorkoutCount>
-              </PlayerDetails>
-            </PlayerInfo>
-            <KcalInfo>
-              <BsDroplet size={16} />
-              <span>{player.kcal} Kcal</span>
-            </KcalInfo>
-          </PlayerCard>
-        ))}
-      </PlayersList>
+        <WorkoutList>
+          {workouts.map((workout, index) => (
+            <WorkoutCard key={index} color={workout.color}>
+              <WorkoutAvatar image={workout.image} />
+              <WorkoutInfo>
+                <WorkoutName>{workout.name}</WorkoutName>
+                <WorkoutStats>{workout.workouts} workouts</WorkoutStats>
+              </WorkoutInfo>
+              <WorkoutKcal>
+                <KcalIcon>💧</KcalIcon>
+                {workout.kcal} Kcal
+              </WorkoutKcal>
+            </WorkoutCard>
+          ))}
+        </WorkoutList>
+      </Content>
     </Container>
   );
 };
 
 const Container = styled.div`
-  width: 100%;
-  height: 100vh;
-  background-color: #000000;
-  max-width: 440px;
+  background: #000000;
+  min-height: 100vh;
+  max-width: 360px;
   margin: 0 auto;
-  position: relative;
-  font-family: 'Montserrat', sans-serif;
+  padding: 16px;
+  color: white;
 `;
 
 const Header = styled.div`
-  padding: 20px;
   display: flex;
   align-items: center;
+  gap: 16px;
+  margin-bottom: 60px;
+  padding-top: 8px;
 `;
 
 const BackButton = styled.button`
   background: none;
   border: none;
-  padding: 8px;
   cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Title = styled.h1`
-  color: white;
-  font-size: 24px;
-  font-weight: 600;
-  margin-left: 24px;
+  font-size: 20px;
+  font-weight: 500;
 `;
 
-const ProgressSection = styled.div`
+const Content = styled.div`
   display: flex;
-  justify-content: center;
-  margin: 20px 0 40px;
+  flex-direction: column;
+  gap: 32px;
 `;
 
-const CircularProgress = styled.div`
+const CalorieCircle = styled.div`
   position: relative;
   width: 240px;
   height: 240px;
+  margin: 20px auto;
 `;
 
-const ProgressContent = styled.div`
+const CircleProgress = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(
+      #A0E234 0% 60%,
+      #9370DB 60% 75%,
+      #333 75% 100%
+    );
+  }
+`;
+
+const InnerCircle = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CircleText = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 8px;
   color: white;
-  text-align: center;
-
+  
   span {
-    font-size: 14px;
-    opacity: 0.8;
+    opacity: 0.7;
   }
 `;
 
-const KcalCount = styled.div`
-  font-size: 36px;
-  font-weight: 600;
-  margin: 8px 0;
+const KcalNumber = styled.div`
+  font-size: 32px;
+  font-weight: bold;
 `;
 
-const PlayersList = styled.div`
-  padding: 0 20px;
-`;
-
-const PlayerCard = styled.div`
-  background-color: ${props => props.color};
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 16px;
+const WorkoutList = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 16px;
 `;
 
-const PlayerInfo = styled.div`
+const WorkoutCard = styled.div`
+  background: ${props => props.color};
+  border-radius: 16px;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-bottom: 12px;
+  height: 60px;
 `;
 
-const PlayerAvatar = styled.img`
+const WorkoutAvatar = styled.div`
   width: 40px;
   height: 40px;
-  border-radius: 20px;
-  object-fit: cover;
-`;
-
-const PlayerDetails = styled.div`
+  border-radius: 50%;
+  background: ${props => props.image ? `url(${props.image}) center/cover` : 'rgba(255, 255, 255, 0.2)'};
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
-const PlayerName = styled.span`
-  color: black;
-  font-weight: 600;
+const WorkoutInfo = styled.div`
+  flex: 1;
+`;
+
+const WorkoutName = styled.div`
+  font-weight: 500;
+  margin-bottom: 4px;
+`;
+
+const WorkoutStats = styled.div`
+  font-size: 14px;
+  opacity: 0.8;
+`;
+
+const WorkoutKcal = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+const KcalIcon = styled.span`
   font-size: 16px;
 `;
 
-const WorkoutCount = styled.span`
-  color: rgba(0, 0, 0, 0.7);
-  font-size: 14px;
-`;
-
-const KcalInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: black;
-  font-weight: 500;
-`;
-
-export default WorkoutProgress;
+export default Play;
